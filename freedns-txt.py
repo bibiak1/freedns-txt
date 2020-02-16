@@ -8,12 +8,10 @@ _pass = ''
 _zone = ''
 
 # do not touch starting now
-from urllib2 import urlopen
+from urllib.request import urlopen
 from lxml.html import parse, tostring, submit_form
 from optparse import OptionParser
 import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
 
 parser = OptionParser()
 parser.add_option('-d', '--delete', action='store_true', dest='delete', default=False)
@@ -47,7 +45,7 @@ page = parse(submit_form(page.forms[0])).getroot()
 page.make_links_absolute(page.base_url)
 find = page.xpath('//table["zonelisttable"]//a[contains(@href, "zones.php") and contains(@href, "%s")]' % (options.zone))
 if len(find) != 1:
-     print "zone %s not found!" % (options.zone)
+     print("zone %s not found!" % (options.zone))
      sys.exit()
 
 mylink = find[0].attrib['href'].replace('zones.php', 'modify.php')
@@ -66,8 +64,8 @@ if options.add:
     page.forms[0].fields['txtstring1'] = options.value
     page.forms[0].fields['txtttl1'] = '1'
     page = parse(submit_form(page.forms[0])).getroot()
-    #print tostring(page.xpath('//div["mainbox_content"]')[0])
-    print "add :: done"
+    #print(tostring(page.xpath('//div["mainbox_content"]')[0]))
+    print("add :: done")
 
 elif options.delete:
     tr = page.xpath('//td[text()="%s"]' % (options.field))
@@ -75,5 +73,5 @@ elif options.delete:
         field = tr[0].getparent().xpath('td/input')[0]
         page.forms[0].inputs[field.name].checked = True
         page = parse(submit_form(page.forms[0])).getroot()
-	#print tostring(page.xpath('//div["mainbox_content"]')[0])
-    print "delete :: done"
+	#print(tostring(page.xpath('//div["mainbox_content"]')[0]))
+    print("delete :: done")
