@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 #author: marcin@biczan.pl
 
 # default variables - you can edit it if you want
